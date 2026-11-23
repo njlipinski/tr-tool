@@ -1,0 +1,640 @@
+12	Lager	Drinks
+20	Ale Yeast	Ingredient
+74	Lager Yeast	Ingredient
+121	Amber Ale	Drinks
+131	Pilsner	Drinks
+132	Porter	Drinks
+133	Stout	Drinks
+142	Mead	Drinks
+165	Red Wine	Drinks
+166	White Wine	Drinks
+167	Rose Wine	Drinks
+168	Wine Yeast	Ingredient
+171	Rosemary	Ingredient
+190	Porridge	Food
+191	Roasted Fish	Food
+260	Meat Skewer	Food
+314	Cup of Tea	Drinks
+316	Sweet Pie	Food
+321	Enchanted Broom	Decor
+343	Cheese Board	Food
+348	Quiche	Food
+351	Distilling Yeast	Ingredient
+353	Vodka	Drinks
+354	Whiskey	Drinks
+355	Gin	Drinks
+357	Brandy	Drinks
+358	Rum	Drinks
+359	Fruit Liqueur	Drinks
+371	Cider	Drinks
+601	Indoor Cactus	Decor
+607	Candelabra	Decor
+648	Decorative Barrel	Decor
+649	Wardrobe	Decor
+652	Old Doormat	Decor
+670	Distillery	Crafting
+672	Oven	Crafter
+674	Cheesery	Crafting
+675	Fermentation Tank	Crafting
+695	Stone Path	Crafting
+699	Stone Head	Decor
+704	Sawmill	Crafting
+706	Stone Workstation	Crafting
+709	Press	Crafting
+723	Stump with Axe	Crafting
+724	Firewood Stockpile	Crafting
+725	Plank Stockpile	Crafting
+727	Coal Stockpile	Crafting
+728	Blacksmith's Table	Crafting
+730	Forging Tank	Crafting
+731	Stonecutter's Table	Crafting
+732	Block Stockpile	Crafting
+733	Mixing Tank	Crafting
+1031	Wood	Crafting
+1035	Kindling	Crafting
+1036	Wooden Planks	Crafting
+1040	Firewood	Crafting
+1041	Iron Ore	Crafting
+1042	Copper Ore	Crafting
+1043	Iron Bar	Crafting
+1044	Copper Bar	Crafting
+1045	Iron Nails	Crafting
+1046	Iron Sheet	Crafting
+1047	Copper Plate	Crafting
+1048	Hinges	Crafting
+1049	Stone	Crafting
+1050	Stone Block	Crafting
+1051	Polished Stone	Crafting
+1052	Mortar	Crafting
+1055	Coal	Crafting
+1062	Copper Shovel	Crafting
+1063	Copper Pickax	Crafting
+1066	Wooden Pole	Crafting
+1070	Skeleton	Decor
+1139	Bird Perch	Decor
+1187	Ghostly Breath	Drinks
+1188	Afterlife Essence	Drinks
+1189	Dead Awakener	Drinks
+1210	Stuffed Turkey	Food
+1211	Roast Pig	Food
+1212	Panettone	Food
+1213	Yule Log	Food
+1214	Roast Beef	Food
+1215	Eggnog Without Alcohol	Drinks
+1216	Egg Nog	Drinks
+1217	Champagne	Drinks
+1219	Raisins	Ingredient
+1220	Chocolate	Ingredient
+1223	Christmas Carrots	Food
+1228	Iron Scrap	Crafting
+1229	Copper Scrap	Crafting
+1249	Vegetable Meat	Ingredient
+1257	Grilled Steak	Food
+1258	Breaded Cutlet	Food
+1259	Meat Stew	Food
+1260	Sausage	Food
+1261	Chorizo	Food
+1262	Barbecue Ribs	Food
+1263	Spaghetti Bolognese	Food
+1264	Meat Lasagna	Food
+1265	Complete Hamburger	Food
+1266	Cheeseburger	Food
+1267	Bread	Food
+1268	Stuffed Chicken	Food
+1269	Bread Dough	Ingredient
+1270	Pasta Dough	Ingredient
+1271	Béchamel	Ingredient
+1272	Tomato Sauce	Ingredient
+1273	Butter	Ingredient
+1274	Curd	Ingredient
+1275	Lard	Ingredient
+1276	Minced Meat	Ingredient
+1277	Breadcrumbs	Ingredient
+1278	Paprika	Ingredient
+1279	Brie Cheese	Ingredient
+1280	Brie Cheese	Ingredient
+1281	Cheddar Cheese	Ingredient
+1282	Cheddar Cheese	Ingredient
+1283	Emmental Cheese	Ingredient
+1284	Emmental Cheese	Ingredient
+1285	Blue Cheese	Ingredient
+1286	Blue Cheese	Ingredient
+1287	Manchego Cheese	Ingredient
+1288	Manchego Cheese	Ingredient
+1289	Feta Cheese	Ingredient
+1290	Mozzarella Cheese	Ingredient
+1291	Oil	Ingredient
+1292	Flour	Ingredient
+1296	Plant Fiber	Crafting
+1297	Jam	Ingredient
+1300	Sugar	Ingredient
+1301	Toast	Food
+1315	Aging Barrel	Crafting
+1318	Glass of Water	Drinks
+1325	Fruit Juice	Drinks
+1326	Stuffed Eggplants	Food
+1327	Onion Rings	Food
+1328	Potato Fries	Food
+1329	Roasted Sweet Potato	Food
+1330	Cream	Ingredient
+1331	Bread with Tomato	Food
+1332	Meat Broth	Food
+1333	Fish Broth	Food
+1334	Vegetable Broth	Food
+1335	Tomato Soup	Food
+1336	Salad	Food
+1337	Soy Sauce	Ingredient
+1338	Omurice	Food
+1339	Lettuce Tacos	Food
+1340	Cauliflower Gratin	Food
+1341	Cream of Cauliflower	Food
+1342	Sponge Cake Dough	Ingredient
+1343	Sponge Cake	Food
+1344	Cinnamon	Ingredient
+1345	Vanilla	Ingredient
+1346	Pumpkin Pie	Food
+1347	Yogurt	Food
+1348	Fruit Yogurt	Food
+1349	Carrot Cake	Food
+1350	Garlic Shrimp	Food
+1351	Spinach with Shrimp	Food
+1352	Spinach with Mushrooms	Food
+1353	Cilantro	Ingredient
+1354	Broccoli Sabji	Food
+1355	Broccoli Stir-fry	Food
+1356	Broccoli with Mango	Food
+1357	Sautéed Peas	Food
+1358	Potato Salad	Food
+1359	Mayonnaise	Ingredient
+1360	Muhammara	Food
+1361	Pepper	Ingredient
+1362	Four Seasons Peppers	Food
+1363	Fajita	Food
+1364	Tortilla	Ingredient
+1365	Tacos	Food
+1366	Chili	Food
+1367	Birria	Food
+1368	Pickled Eggs	Food
+1369	Beet Gazpacho	Food
+1370	Cold Beet Soup	Food
+1371	Turnip Cream Soup	Food
+1372	Turnip Puree	Food
+1373	Provençal Vegetables	Food
+1374	Moussaka	Food
+1375	Steamed Eggplants	Food
+1378	Pickles in Vinegar	Food
+1379	Marinated Pickles	Food
+1380	Preserves Table	Crafting
+1381	Cucumber Cream	Food
+1382	Kimchi	Food
+1383	Zucchini Salad	Food
+1384	Scarpaccia	Food
+1385	Green Bean Casserole	Food
+1386	Brie and Bean Rolls	Food
+1387	Potato Cake	Food
+1388	Cream of Potato and Mushroom	Food
+1389	Baked Potatoes	Food
+1390	Chicken with Olives and Rosemary	Food
+1391	Hummus	Food
+1392	Curry	Ingredient
+1393	Chickpeas with Curry	Food
+1394	Chickpea Salad	Food
+1395	Falafel	Food
+1396	Lentil and Spinach Salad	Food
+1397	Lentil Stew	Food
+1398	Fish with Lentils in Vinaigrette Sauce	Food
+1399	Corn Cobs	Food
+1400	Corn Chowder	Food
+1401	Rice Balls	Food
+1402	Gyozas	Food
+1403	Lamb Biryani	Food
+1404	Mochis	Food
+1406	Dorayaki	Food
+1407	Burrito	Food
+1408	Scrambled Mushrooms	Food
+1409	Mushrooms with Cream	Food
+1410	Sweet Potato Pudding	Food
+1411	Rice Pudding	Food
+1412	Catalan Cream	Food
+1413	Mustard	Ingredient
+1414	Honey Mustard Ribs	Food
+1416	Mustard Glazed Roast	Food
+1417	Nut Bar	Food
+1418	Brownie	Food
+1419	Strawberries and Cream	Food
+1420	Apple Tart	Food
+1421	Almond Cake	Food
+1422	Baklava	Food
+1423	Marron Glacé	Food
+1424	Chicken with Almonds	Food
+1425	Chocolate with Nuts	Food
+1426	Sweet and Sour Pork	Food
+1427	Yogurt Bowl	Food
+1428	Meat with Chestnut Sauce	Food
+1429	Banana and Almond Sponge Cake	Food
+1430	Peanut Cookies	Food
+1431	Loco Moco	Food
+1432	Curry Nuts	Food
+1433	Phad Thai	Food
+1434	Noodles with Vegetables and Nuts	Food
+1436	Cheese Fondue	Food
+1446	Meat Bait	Crafting
+1447	Seafood Bait	Crafting
+1452	Cream Cheese	Ingredient
+1453	Minced Fish	Ingredient
+1455	Fried Fish	Food
+1456	Octopus with Paprika	Food
+1457	Cooked Seafood	Food
+1458	Grilled Seafood	Food
+1459	Croquettes	Food
+1460	Clams Mariniere	Food
+1461	Crab Cake	Food
+1462	Mussels in Spicy Sauce	Food
+1463	Fish in Green Sauce	Food
+1464	Rice with Seafood	Food
+1465	Anchovies in Oil	Food
+1466	Pickled Fish	Food
+1467	Fish Stew	Food
+1468	Sushi Roll	Food
+1469	Fish Fritters	Food
+1470	Steamed Fish with Spices	Food
+1471	Ceviche	Food
+1472	Fish Curry	Food
+1473	Fish Soup	Food
+1474	Trench Coat Shrimps	Food
+1475	Calamari Sandwich	Food
+1476	Vietnamese Rolls	Food
+1477	Meen Achar	Food
+1497	Hors d'Oeuvres	Food
+1498	Cheesecake	Food
+1501	Ramen	Food
+1502	Seaweed Salad	Food
+1503	White Bean Cream Soup	Food
+1504	Fabada	Food
+1508	Savory Pie	Food
+1510	Piña Colada	Drinks
+1512	Mojito	Drinks
+1517	Dark Lager	Drinks
+1518	Dunkel	Drinks
+1519	Rice Lager	Drinks
+1520	Vanilla Ale	Drinks
+1521	Chocolate Lager	Drinks
+1522	Milk Stout	Drinks
+1523	Mulled Wine	Drinks
+1524	Anisette	Drinks
+1525	Herbal Liquor	Drinks
+1527	Aniseed	Ingredient
+1528	Sangria	Drinks
+1529	Vermouth	Drinks
+1530	Sake	Drinks
+1531	Flavored Beer	Drinks
+1535	Rat Meat	Ingredient
+1536	Rat Skewer	Food
+1544	Malt	Ingredient
+1545	Toasted Malt	Ingredient
+1546	Strong Ale	Drinks
+1547	Bloody Mary	Drinks
+1548	Love on the Beach	Drinks
+1549	Old Fashioned	Drinks
+1550	Dizzy Orange	Drinks
+1551	Dry Martini	Drinks
+1552	Hunter's Bomb	Drinks
+1553	Pink Lady	Drinks
+1600	Yogurt with Honey	Food
+1601	Honey Flan	Food
+1602	Torrijas	Food
+1626	Canopic Jar	Decor
+1661	Fish in Puff Pastry	Food
+1662	Prawn Cocktail	Food
+1663	Stuffed Crab	Food
+1664	Polvorón	Food
+1730	Tribal Mask	Decor
+1731	Ceremonial Mask	Decor
+1732	Ritual Mask	Decor
+1733	Shaman Mask	Decor
+1735	King Rygar Bust	Decor
+1736	King Cedric Bust	Decor
+1737	Sarcophagus	Decor
+1738	Wooden Chalice	Decor
+1739	Royal Chalice	Decor
+1740	Mummy	Decor
+1741	Mummified Cat	Decor
+1742	Lion Statue	Decor
+1743	Geode	Decor
+1744	Giant Geode	Decor
+1745	Moai	Crafting
+1747	Ancient Pot	Decor
+1748	Ancient Vase	Decor
+1749	Parang and Spatula	Decor
+1750	Prehistoric Daggers	Decor
+1751	Ornamental Gladius	Decor
+1752	Jackal Statue	Decor
+1753	Tavern Keeper King Tapestry	Decor
+1754	Prehistoric Tapestry	Decor
+1755	Dragon Head	Decor
+1756	Millennium Calendar	Decor
+1762	Ammonite	Decor
+1763	Trilobite	Decor
+1764	Ancient Amber	Decor
+1765	Baobab Tree	Decor
+1766	Rafflesia	Decor
+1767	Venus Flytrap	Decor
+1768	Titan Arum	Decor
+1771	Dodo Reconstruction	Decor
+1772	Prehistoric Individual Table	Decor
+1773	Prehistoric Small Table	Decor
+1774	Prehistoric Large Table	Decor
+1775	Classical Individual Table	Decor
+1776	Classical Small Table	Decor
+1777	Classical Large Table	Decor
+1781	Prehistoric Stool	Decor
+1782	Prehistoric Small Bench	Decor
+1783	Prehistoric Large Bench	Decor
+1787	Classical Stool	Decor
+1788	Classical Small Bench	Decor
+1789	Classical Large Bench	Decor
+1790	Ancient Incense Burner	Decor
+1791	Crystal Skull	Decor
+1792	Mosaic Lamp	Decor
+1793	Colourful Lantern	Decor
+1794	Classical Lamp	Decor
+1795	Troglodyte Bed	Decor
+1797	Troglodyte Rug	Decor
+1798	Sable-Tooth Rug	Decor
+1799	Terracotta Warrior	Decor
+1800	Anatomy Model	Decor
+1801	Sphinx	Decor
+1802	Golden Scarabaeus	Decor
+1803	Fossilized Artifact	Decor
+1804	Glyphs Dog House	Decor
+1805	Troglodyte Bird Perch	Decor
+1809	Etched Stone	Crafting
+1810	Silverbeard's Map	Decor
+1811	Beret Hairstyle	Hairstyle
+1812	Straw Hat	Hairstyle
+1813	Barrel Stool	Decor
+1815	Ship in a Bottle	Crafting
+1816	Display Katana	Decor
+1817	Chocolate Guinness Cake	Food
+1818	Whiskey Cream	Drinks
+1819	Okonomiyaki	Food
+1820	Silverbeard's Grog	Drinks
+1821	Double Bed	Decor
+1822	Noble Bed	Decor
+1823	Straw Bed	Decor
+1824	Memorial Statue 2025	Decor
+1825	Christmas Painting	Decor
+1826	Winter Painting	Decor
+1827	Noble Chimney	Decor
+1828	Iron Axe	Crafting
+1829	Cobalt Axe	Crafting
+1831	Iron Pickax	Crafting
+1832	Cobalt Pickax	Crafting
+1834	Iron Shovel	Crafting
+1835	Cobalt Shovel	Crafting
+1843	Forged Individual Table	Decor
+1844	Forged Small Table	Decor
+1845	Forged Large Table	Decor
+1846	Forged Small Bench	Decor
+1847	Forged Bench	Decor
+1848	Forged Stool	Decor
+1849	Light Hewn Individual Table	Decor
+1850	Light Hewn Small Table	Decor
+1851	Light Hewn Large Table	Decor
+1852	Light Hewn Small Bench	Decor
+1853	Light Hewn Large Bench	Decor
+1854	Light Hewn Stool	Decor
+1855	Dark Hewn Individual Table	Decor
+1856	Dark Hewn Small Table	Decor
+1857	Dark Hewn Large Table	Decor
+1858	Dark Hewn Small Bench	Decor
+1859	Dark Hewn Large Bench	Decor
+1860	Dark Hewn Stool	Decor
+1861	Reinforced Individual Table	Decor
+1862	Reinforced Small Table	Decor
+1863	Reinforced Large Table	Decor
+1864	Reinforced Small Bench	Decor
+1865	Reinforced Bench	Decor
+1866	Reinforced Stool	Decor
+1867	Dressing Table	Decor
+1868	Full Length Mirror	Decor
+1869	Wall Mirror	Decor
+1870	Noble Wardrobe	Decor
+1871	Noble Bookshelf	Decor
+1872	Floor Clock	Decor
+1873	Advanced Oven	Crafting
+1875	Advanced Distillery	Crafting
+1877	Advanced Brewing Barrel	Crafting
+1879	Advanced Preserves Table	Crafting
+1881	Advanced Fermentation Tank	Crafting
+1883	Advanced Cocktail Table	Crafting
+1885	Advanced Aging Barrel	Crafting
+1887	Advanced Keg	Crafting
+1889	Cobalt Ore	Crafting
+1890	Cobalt Bar	Crafting
+1891	Cobalt Plate	Crafting
+1892	Cobalt Nails	Crafting
+1898	Granite	Crafting
+1899	Polished Granite	Crafting
+1900	Granite Block	Crafting
+1904	Noble Wood	Crafting
+1905	Noble Wooden Planks	Crafting
+1906	Noble Wooden Pole	Crafting
+1910	Spider Eye	Ingredient
+1913	Spider Silk	Ingredient
+1914	Venomous Tentacle	Ingredient
+1916	Frog Meat	Ingredient
+1917	Acid Jelly	Ingredient
+1918	Slimy Ooze	Ingredient
+1960	Magic Shards	Ingredient
+1961	Empty Bottle	Decor
+1962	Hot Water Bottle	Decor
+1963	Stone Window	Decor
+1964	Ornate Window	Decor
+1967	Hedge Fence	Decor
+1968	Floral Centerpiece	Decor
+1969	Fruit Centerpiece	Decor
+1970	Opulent Centerpiece	Decor
+1971	Forged Candleholder	Decor
+1972	Golden Armor	Decor
+1973	Imposing Armor	Decor
+1974	Big Night Table	Decor
+1975	Wooden Column	Decor
+1976	Stone Column	Decor
+1977	Rock Arch	Decor
+1978	Forged Arch	Decor
+1984	Stone Fountain	Decor
+1985	Cupboard	Decor
+1986	Sink	Decor
+1987	Spice Rack	Decor
+1988	Pantry	Decor
+1990	Floral Coaster	Decor
+1991	Great Flower Rug	Decor
+1992	Ornate Rug	Decor
+1993	Rock Exterior Lamp	Decor
+1994	Forged Lamp Post	Decor
+1998	Hydrangea	Decor
+1999	Rose Bush	Decor
+2051	Circular Edging	Decor
+2053	Edging Section	Decor
+2054	Advanced Aging Rack	Decor
+2058	Varnish	Crafting
+2062	Opulent Coaster	Decor
+2071	Talisman Left Piece	Crafting
+2072	Talisman Right Piece	Crafting
+2073	Hard Hat	Hairstyle
+2074	Mining Helmet	Hairstyle
+2075	Helmet with Candle	Hairstyle
+2076	Toadstool Hat	Hairstyle
+2077	Fungus Hat	Hairstyle
+2078	Mining Cap	Hairstyle
+2079	Rusty Helm	Hairstyle
+2080	Red Crystal Crown	Hairstyle
+2081	Blue Crystal Crown	Hairstyle
+2082	Goggles Headband	Hairstyle
+2083	Goggles	Hairstyle
+2084	Sprout Hairstyle	Hairstyle
+2148	Classical Bed	Decor
+2149	Floating Candle	Decor
+2150	Enchanted Book	Decor
+2151	Arcane Hourglass	Decor
+2152	Arcane Specimen	Decor
+2153	Arcane Cube	Decor
+2154	Arcane Device	Decor
+2155	Decorative Potion	Decor
+2156	Decorative Portal	Decor
+2157	Crystal Ball	Decor
+2158	Magic Fountain	Decor
+2159	Runic Circle	Decor
+2160	Magic Statuette	Decor
+2161	Icy Torch	Decor
+2162	Void Bin	Decor
+2163	Draconic Statue	Decor
+2164	Magic Vine	Decor
+2165	Guardian Portrait	Decor
+2166	Magic Portrait	Decor
+2167	Runic Tablecloth	Decor
+2168	Shard-like Large Shelf	Decor
+2170	Runic Rug	Decor
+2171	Mystical Rug	Decor
+2172	Decorative Shard	Decor
+2174	Arcane Individual Table	Decor
+2175	Arcane Small Table	Decor
+2176	Arcane Large Table	Decor
+2177	Arcane Small Bench	Decor
+2178	Arcane Large Bench	Decor
+2179	Arcane Stool	Decor
+2180	Arcane Small Shelf	Decor
+2181	Arcane Bookcase	Decor
+2182	Arcane Window	Decor
+2184	Arcane Chimney	Decor
+2185	Arcane Bed	Decor
+2186	Runic Stained Glass Window	Decor
+2187	Arcane Large Shelf	Decor
+2192	Shard-like Individual Table	Decor
+2193	Shard-like Small Table	Decor
+2194	Shard-like Large Table	Decor
+2195	Shard-like Small Bench	Decor
+2196	Shard-like Large Bench	Decor
+2197	Shard-like Stool	Decor
+2198	Shard-like Candleholder	Decor
+2199	Shard-like Small Shelf	Decor
+2200	Ancestral Bookcase	Decor
+2201	Hidden Mirror	Decor
+2202	Apprentice's Red Grimoire	Crafting
+2203	Apprentice's Green Grimoire	Crafting
+2204	Apprentice's Blue Grimoire	Crafting
+2205	Apprentice's Yellow Grimoire	Crafting
+2206	Conjurer'S Red Grimoire	Crafting
+2207	Conjurer'S Green Grimoire	Crafting
+2208	Conjurer'S Blue Grimoire	Crafting
+2209	Conjurer'S Yellow Grimoire	Crafting
+2210	Archmage Red Grimoire	Crafting
+2211	Archmage Green Grimoire	Crafting
+2212	Archmage Blue Grimoire	Crafting
+2213	Archmage Yellow Grimoire	Crafting
+2214	Glowing Minced Meat	Food
+2215	Shimmering Stew	Food
+2216	Lotus Cake	Food
+2217	Oblivion Cookies	Food
+2218	Screaming Honey Toast	Food
+2219	Solar Popcorn	Food
+2220	Candied Rat	Food
+2221	Spiced Rat Skewers	Food
+2222	Risatta	Food
+2223	Shrill Frog Legs	Food
+2224	Acid Tongues	Food
+2225	Lamprey In Mana Sauce	Food
+2226	Ethereal Tuna	Food
+2227	Eyed Tails	Food
+2228	Tidal Salad	Food
+2229	Horseshoe Stewpot	Food
+2230	Igneous Crumbs	Food
+2231	Infernal Tide	Food
+2232	Gloomy Braid	Food
+2233	Hot Sour Gel	Food
+2234	Cosmic Brownies	Food
+2236	Runic Essence	Drinks
+2237	Stellar Punch	Drinks
+2238	Iridescent Tea	Drinks
+2239	Panacea	Drinks
+2240	Moon Tear	Drinks
+2241	Light And Shadow	Drinks
+2242	Dawn Liqueur	Drinks
+2243	Grilled Tentacles	Food
+2244	Drowned Knowledge	Drinks
+2245	Esoteric Skewer	Food
+2246	Astral Foam	Food
+2249	Arachnid Cotton	Food
+2250	Silk Cake	Food
+2251	Black Fritter	Food
+2252	Enchanted Yeast	Ingredient
+2253	Acid Syrup	Drinks
+2254	Baba Yaga	Drinks
+2255	Aureate Liqueur	Drinks
+2256	Frog Liqueur	Drinks
+2257	Nighttime Solace	Drinks
+2258	Twilight Sweetness	Drinks
+2259	Weaver	Drinks
+2260	Arcane Oven	Crafting
+2261	Arcane Distillery	Crafting
+2262	Magic Fiber	Ingredient
+2263	Arcane Catalyst	Ingredient
+2264	Arcane Fertilizer	Crafting
+2265	Arcane Book Stand	Crafting
+2266	Flaming Herb	Decor
+3055	Aromatic Plants	Ingredient
+3103	Glass Fruit	Crop
+3104	Glass Fruit Seeds	Crop
+3105	Aureate Corncob	Crop
+3106	Aureate Corncob Grain	Crop
+3107	Volcanic Shoot	Crop
+3108	Volcanic Shoot Seeds	Crop
+3109	Jade Thorn	Crop
+3110	Jade Thorn Seeds	Crop
+3111	Errant Flower	Crop
+3112	Errant Flower Seeds	Crop
+3113	Withered Veil	Crop
+3114	Withered Veil Seeds	Crop
+3115	Wayward Walnut	Crop
+3116	Wayward Walnut Seeds	Crop
+3117	Solar Flare	Crop
+3118	Solar Flare Seeds	Crop
+3119	Dawn Root	Ingredient
+3120	Glowing Toadstool	Ingredient
+3121	Mandrake	Ingredient
+3122	Effulgent Moss	Ingredient
+3123	Shadowmoon	Ingredient
+3124	Whispering Lotus	Ingredient
+3125	Shadow Berry	Ingredient
+3126	Tide Leaf	Ingredient
+3466	Dread Angler	Ingredient
+3467	Lamprey	Ingredient
+3468	Bone Barbel	Ingredient
+3469	Horseshoe Crab	Ingredient
+3470	Fossil Fish	Ingredient
+3471	Abyssal Stingray	Ingredient
+3472	Rainbow Jellyfish	Ingredient
+3473	Fluorescent Eel	Ingredient
+3474	Crystal Fish	Ingredient
+3475	Ringed Octopus	Ingredient

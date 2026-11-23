@@ -1,0 +1,34 @@
+id	name	category	serving	confidence	basis
+1245	Beef	Ingredient		confirmed	In-game Tacos tooltip (Beef, Lard, Lime) matches save ingredients [1245, 1275 Lard, 148]
+148	Lime	Ingredient		confirmed	In-game Tacos tooltip (Beef, Lard, Lime) matches save ingredients [1245, 1275 Lard, 148]
+1248	Lamb Meat	Ingredient		confirmed	Checked in game by Nick
+3437	Sardine	Ingredient		confirmed	Week 4 popular-ingredient icon, named in game by Nick
+1246	Pork	Ingredient		likely	Week 4 unpopular set is Pork, Shrimp, Wild Berries; 1246 is the only meat-range ID (next to Beef 1245)
+1376	Wild Berries	Ingredient		guess	Week 4 unpopular set; ID sits next to Seaweed (1377), another forage item
+3073	Shrimp	Ingredient		guess	Week 4 unpopular set; the remaining ID after Pork and Wild Berries
+218	Watermelon / Mango / Pineapple	Ingredient		set known	Week 4 popular fruits; which of the three is not yet known
+3069	Watermelon / Mango / Pineapple	Ingredient		set known	Week 4 popular fruits; which of the three is not yet known
+256	Watermelon / Mango / Pineapple	Ingredient		set known	Week 4 popular fruits; which of the three is not yet known
+3048	Hops (one kind)	Ingredient		likely	Week 4 popular (purple cone icon, confirmed as a correct guess); second input to Amber Ale and Pilsner
+244	Onion	Ingredient		likely	Week 3 popular-ingredient icon; used in Meat Skewer, Corn Chowder, Fish Stew, Salad, Vegetable Broth
+1252	Milk (one kind)	Ingredient		likely	Week 3 unpopular milk-bottle icon; input to Béchamel, Curd, all yogurt dishes
+1253	Milk (another kind)	Ingredient		guess	Alternative input to Béchamel and Curd alongside #1252; also in Whiskey Cream
+3093	Pistachio	Ingredient		likely	Week 3 unpopular icon; used in Nut Bar and Yogurt Bowl
+1377	Seaweed	Ingredient		likely	Week 3 unpopular icon (only one left after milk and pistachio)
+3455	Sea Urchin	Ingredient		likely	Week 3 popular icon; 34xx IDs are seafood
+3016	Wheat	Ingredient		likely	"Input to Flour, Malt, Toasted Malt, Gin; Bread tooltip shows ""Wheat"""
+3050	Hops (another kind)	Ingredient		guess	Second input to Dark Lager, Porter, Stout
+12			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+121			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+131			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+132			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+133			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1517			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1518			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1519			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1520			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1521			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1522			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1531			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+1546			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+371			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
