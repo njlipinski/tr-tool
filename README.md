@@ -41,6 +41,9 @@ On Windows the saves are in
 | `build-db` | Rebuild `build/trtool.db` from `data/*.tsv` (happens automatically when the TSVs change). |
 | `dump [SAVE] [--field NAME]` | Print the decoded save as JSON, for exploring new fields. |
 | `where` | Print the save folder the tool found. |
+| `config [show\|get\|set] [KEY] [VALUE]` | Local settings in `trtool.ini` (gitignored), e.g. `config set game_dir "E:\SteamLibrary\steamapps\common\Travellers Rest"`. `TRTOOL_GAME_DIR` overrides it. |
+| `extract [--game-dir PATH] [-o FILE]` | Build the game catalogue (items, groups, recipes, crafters, crops, fish, shops; English names) into `build/catalogue.db`. Re-run after each game update. Needs `pip install UnityPy TypeTreeGeneratorAPI`. |
+| `explore [--game-dir PATH]` | Inventory the game's asset files (object types and script classes) into `build/explore/`. Needs `pip install UnityPy TypeTreeGeneratorAPI`. |
 
 `SAVE` can be a `.save` file or a folder (the newest `.save` in it is used).
 With no `SAVE`, the game's own folder is used.

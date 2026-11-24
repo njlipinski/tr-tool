@@ -9,10 +9,10 @@ dependencies = []
 trtool = "trtool.cli:main"
 
 [tool.setuptools]
-packages = ["trtool"]
+packages = ["trtool", "trtool.extract"]
 
 [tool.setuptools.package-data]
-trtool = ["schema.sql"]
+trtool = ["schema.sql", "catalogue.sql"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

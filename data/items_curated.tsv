@@ -1,8 +1,8 @@
 id	name	category	serving	confidence	basis
 1245	Beef	Ingredient		confirmed	In-game Tacos tooltip (Beef, Lard, Lime) matches save ingredients [1245, 1275 Lard, 148]
 148	Lime	Ingredient		confirmed	In-game Tacos tooltip (Beef, Lard, Lime) matches save ingredients [1245, 1275 Lard, 148]
-1248	Lamb Meat	Ingredient		confirmed	Checked in game by Nick
-3437	Sardine	Ingredient		confirmed	Week 4 popular-ingredient icon, named in game by Nick
+1248	Lamb Meat	Ingredient		confirmed	Checked in game by the user
+3437	Sardine	Ingredient		confirmed	Week 4 popular-ingredient icon, named in game by the user
 1246	Pork	Ingredient		likely	Week 4 unpopular set is Pork, Shrimp, Wild Berries; 1246 is the only meat-range ID (next to Beef 1245)
 1376	Wild Berries	Ingredient		guess	Week 4 unpopular set; ID sits next to Seaweed (1377), another forage item
 3073	Shrimp	Ingredient		guess	Week 4 unpopular set; the remaining ID after Pork and Wild Berries
@@ -18,17 +18,17 @@ id	name	category	serving	confidence	basis
 3455	Sea Urchin	Ingredient		likely	Week 3 popular icon; 34xx IDs are seafood
 3016	Wheat	Ingredient		likely	"Input to Flour, Malt, Toasted Malt, Gin; Bread tooltip shows ""Wheat"""
 3050	Hops (another kind)	Ingredient		guess	Second input to Dark Lager, Porter, Stout
-12			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-121			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-131			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-132			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-133			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1517			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1518			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1519			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1520			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1521			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1522			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1531			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-1546			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
-371			tap		Beer/cider can go on a tap (Nick); beer list from the wiki Item page
+12			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+121			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+131			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+132			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+133			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1517			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1518			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1519			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1520			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1521			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1522			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1531			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+1546			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page
+371			tap		Beer/cider can go on a tap (the user); beer list from the wiki Item page

@@ -4,3 +4,4 @@ __pycache__/
 *.save
 *_report.html
 .pytest_cache/
+trtool.ini
