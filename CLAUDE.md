@@ -42,12 +42,17 @@ trtool/learn.py     Records observations from saves into data/*.tsv.
 trtool/analysis.py  Diagnostics as plain dicts.
 trtool/report.py    HTML report.
 trtool/cli.py       Commands: report, learn, ingredients, build-db, dump, where,
-                    config, explore, extract.
+                    config, explore, extract, export-xlsx, import-xlsx.
 trtool/config.py    Local settings (trtool.ini, gitignored; TRTOOL_<KEY> env overrides).
 trtool/extract/     The only code that knows game-file names (Phase 1-2): locate the
                     install, UnityPy + type-tree generator, I2 reader, catalogue builder.
-trtool/catalogue.sql  Catalogue schema (build/catalogue.db, written by `extract`).
-trtool/catalogue.py   Stdlib queries: expand, leaf_inputs, uses.
+trtool/catalogue.sql  Catalogue schema (build/extracted.db from `extract`, and
+                      build/catalogue.db = extracted + overrides).
+trtool/catalogue.py   Stdlib queries: expand, leaf_inputs, uses. connect() rebuilds
+                      catalogue.db when the extracted data or overrides change.
+trtool/overrides.py   Phase 3, stdlib: override TSV format, apply/stale check, diff/merge.
+trtool/xlsx.py        Phase 3: export-xlsx / import-xlsx (openpyxl, imported lazily).
+data/overrides/       The user's catalogue fixes, <table>.tsv (committed; created by import-xlsx).
 docs/findings.md    Phase 1 findings: where the game keeps its data, and decisions.
 data/raw/wiki_items.tsv   Bootstrap item names from the wiki. Retire once extraction works.
 data/items_curated.tsv    Names the user confirmed in game. Becomes the first overrides.

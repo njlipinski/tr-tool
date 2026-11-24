@@ -265,6 +265,99 @@ rule; the 2 misses were Brandy).
 scenes (74 non-replaced recipes have no crafter yet), enum names, and the
 shop reputation requirements (only in the designer table so far).
 
+## Phase 3: overrides through Excel
+
+**Build order.** `extract` now writes the pure game data to
+`build/extracted.db`, then copies it to `build/catalogue.db` with
+`data/overrides/*.tsv` applied (`trtool/overrides.py`, stdlib).
+`catalogue.connect()` rebuilds `catalogue.db` by itself whenever the
+extracted data or an override file is newer. `extract -o FILE` became
+`--build-dir DIR`, the same option `export-xlsx` and `import-xlsx` take.
+
+**Override format** (the hard-to-undo choice; awaiting the user's OK). There's
+one TSV per table, named after it (`items.tsv`, `recipe_inputs.tsv`, ...), and
+one line per changed cell:
+
+| key columns… | action | column | value | replaced | note | date |
+|---|---|---|---|---|---|---|
+| `1245` | set | name | Beef Steak | Beef | renamed in game | 2026-11-23 |
+| `8 79` (shop, recipe) | delete | | | `{}` (the removed row, JSON) | | |
+| `999 307` | add | | | | | |
+
+- The key columns are the table's own, spelled out, so the files read
+  naturally: `items` → `id`; `recipe_inputs` → `recipe_id, slot`;
+  `group_members` → `group_id, member_id, rule, mod_id`. A member can appear
+  twice with different modifiers, e.g. group −43 lists 1325 once with mod 157
+  and once without. `crafter_recipes`, `crop_harvests`, `shop_items` and
+  `shop_recipes` use their two ID columns; checked unique in 0.7.6.19.
+- `set` stores the extracted value it replaced. `add` stores one line per
+  filled column, so a new row is readable cell by cell. `delete` stores the
+  removed row as JSON, so a game change to that row is detected too. An empty
+  cell means NULL.
+- **Stale** = the extracted value no longer equals `replaced`, the row has
+  gone, or an added row now exists in the game. Stale overrides are skipped,
+  never applied silently. `extract` prints them, and the workbook's "Stale
+  overrides" sheet has a `decision` column: `keep` re-bases the override on
+  the current game value, `drop` removes it, and blank leaves it stale.
+  (`validate` will list them too, in Phase 4.)
+
+**Workbook.** There's an About sheet, then one sheet per table. Key columns
+have a blue header. Each ID column has a grey `[… name]` column after it, which
+the import ignores. A recipe's name is its output's name. The last column,
+`note`, holds the user's reason for a change. Import checks every cell against
+the column type and the keys for duplicates or blanks. On any problem it lists
+them all and saves nothing. `--dry-run` shows what would change. Dates and notes
+of unchanged overrides are kept.
+
+**Floats.** Unity floats are 32-bit, and Excel keeps 15 significant digits, so
+a shop weight of 0.3 came back as a change (0.30000001192092896 →
+0.300000011920929). The extractor now stores 32-bit floats as their shortest
+exact decimal (0.3). Comparisons use 15 significant digits. An untouched
+export → import of the real catalogue saves **no** overrides (tested).
+
+**Gitignore.** `*.xlsx` was added, since workbooks contain extracted game
+data (Rule 3). The default export path is `build/catalogue.xlsx`.
+
+**Not done:** Google Sheets (later, on request). `items_curated.tsv` names
+move into overrides in Phase 5, as planned.
+
+## Report: known-recipe suggestions and reputation (asked for by the user)
+
+- **Reputation has no history in the save.** It holds only `tavernRep` (level)
+  and `tavernProgress`. The per-day `tavernStats` entries have no reputation
+  field. Their `service` value isn't identified yet, so it isn't used. The
+  game keeps one save per slot, plus `Save.backup`, which is the same save.
+  So `learn` (run by every `report`) records one snapshot per in-game day in
+  `data/reputation.tsv`, and the history starts from the first report run.
+  The stats days can't be matched to dates: there are 71 entries, but the save
+  is on day 79, because stats started after the save was created. So
+  reputation gets its own table and chart instead of a column in the daily table.
+  When the level changes, "gained" isn't computed, because it isn't known
+  whether progress resets at a level-up.
+- **Known recipes** = the save's `unlockedRecipes` (199 here, all current
+  recipes in the catalogue), plus recipes with `unlock = 0`. Those are basic
+  intermediates (flours, malts, worts, musts, pickles) that never appear in
+  `unlockedRecipes`. *Assumption:* they need no unlocking.
+- **Menu items** = `can_be_sold = 1` and `food_type` 1 (food) or 2 (drink).
+  All 47 items on the user's menu fit this.
+- **Value** = `Food.sellPrice` (`items.sell_price_copper`), shown as "base
+  price". It's 283c for Cheeseburger, against the in-game range of 2s 90c –
+  6s 5c, so the actual menu price also depends on ingredients, quality and
+  pricing. `Food.price` is 0 for most dishes and isn't the menu price.
+  The save's `menuPricingRef*` fields could refine this later.
+- **Fixed ingredients aren't stored on dishes.** Honey Flan (Milk, Honey,
+  Egg, Sugar) stores only `[Sheep Milk]`. *Open question:* does an ingredient
+  trend boost a dish that uses the ingredient as a fixed input? The user
+  believes it does, so the report ranks those dishes with the others, marked
+  **fixed**, but this is untested. Test it in game while a fixed-only
+  ingredient trends, e.g. Honey (Honey Flan, Yogurt with Honey, Nut Bar):
+  check whether the dish shows the +10% popular-ingredient effect.
+- **`menuPricingRefCopper` can't settle that.** The values are per instance
+  (dish plus chosen ingredients) and drift by up to ±9% within one trend
+  week. Save.backup (Tue, `menuPricingWeek` 26) vs the save (Fri, 27) had
+  identical trends, yet Meat Skewer (Lamb, Pumpkin) went 910 → 828. That
+  noise hides a 10% effect, and `menuPricingWeek` isn't the calendar week.
+
 ## Other notes
 - README says CLAUDE.md documents the name confidence levels and how to add
   a table; it no longer does (they're in `trtool/schema.sql` and the

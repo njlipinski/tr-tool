@@ -71,3 +71,57 @@ def test_uses_through_groups_and_intermediates(cat):
     u = cat.uses(1245)
     assert u[334] == [1245, 1276]                        # Beef -> Minced Meat
     assert u[321] == [1245, 1276, 1266]                  # ... -> Cheeseburger
+
+
+def _sellable(con, item, price, food_type=1):
+    con.execute("UPDATE items SET can_be_sold = 1, food_type = ?, sell_price_copper = ? WHERE id = ?",
+                (food_type, price, item))
+
+
+def test_known_recipes_limit_chains(cat):
+    con = cat.con
+    con.execute("UPDATE recipes SET unlock = 1")
+    con.execute("UPDATE recipes SET unlock = 0 WHERE recipe_id = 334")      # basic: needs no unlocking
+    assert catalogue.known_recipe_ids(con, [321]) == {321, 334}
+    only_burger = catalogue.Catalogue(con, {321})
+    leaves = only_burger.leaf_inputs(1266)
+    assert 1276 in leaves and 1245 not in leaves         # Minced Meat can't be made from Beef without 334
+    assert 334 not in only_burger.recipes
+
+
+def test_serving_and_price(cat):
+    _sellable(cat.con, 1266, 283)
+    c = catalogue.Catalogue(cat.con)
+    assert c.serving(1266) == "food" and c.price(1266) == 283
+    assert c.serving(1276) is None                       # not sellable
+
+
+def test_makeable_suggestions(cat):
+    from trtool import analysis
+    con = cat.con
+    _sellable(con, 1266, 283)
+    con.execute("INSERT INTO items (id, name, kind, class, can_be_sold, food_type, sell_price_copper) "
+                "VALUES (1300, 'Steak', 'item', 'Food', 1, 1, 500)")
+    con.execute("INSERT INTO recipes (recipe_id, output_id, output_qty, save_ingredients, replaced) "
+                "VALUES (950, 1300, 4, 1, 0)")
+    con.execute("INSERT INTO recipe_inputs VALUES (950, 0, 1245, NULL, 1)")   # Beef as a fixed input
+    con.execute("INSERT INTO items (id, name, kind, class) VALUES (672, 'Oven', 'item', 'Item')")
+    con.execute("INSERT INTO crafter_recipes VALUES (672, 321)")
+    c = catalogue.Catalogue(con)
+    t = {"food": {"popular": [1266], "unpopular": []}, "drink": {"popular": [], "unpopular": []},
+         "ingredient": {"popular": [1245], "unpopular": []}}
+    make, make_with = analysis.makeable_suggestions(c, t, where={}, stored={}, menu=[])
+    assert [(r["name"], r["price"], r["recipes"][0]["crafters"]) for r in make] == [("Cheeseburger", 283, ["Oven"])]
+    beef = make_with[0]
+    assert beef["name"] == "Beef" and beef["serving_now"] == []
+    # one list, highest price first; fixed inputs are flagged
+    assert [(o["name"], o["chain"], o["fixed"]) for o in beef["options"]] == [
+        ("Steak", "Steak ← Beef", True),
+        ("Cheeseburger", "Cheeseburger ← Minced Ingredients ← Minced Meat ← Meat ← Beef", False)]
+    # a menu dish with it as a fixed input counts as serving it
+    _, mw = analysis.makeable_suggestions(c, t, where={1300: ["bar 2"]}, stored={},
+                                          menu=[{"item": 1300, "where": "bar 2", "ingredients": []}])
+    assert mw[0]["serving_now"] == ["Steak (bar 2, fixed)"]
+    # on the menu already, or stocked: not in "make"
+    make, _ = analysis.makeable_suggestions(c, t, where={1266: ["bar 1"]}, stored={}, menu=[])
+    assert make == []

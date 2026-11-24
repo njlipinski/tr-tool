@@ -36,8 +36,9 @@ def table(headers, rows, cls=""):
     return "".join(out)
 
 
-def line_chart(series, labels, width=760, height=220):
-    """series: [(name, color, [values])] -> inline SVG."""
+def line_chart(series, labels, width=760, height=220, fmt=None):
+    """series: [(name, color, [values])] -> inline SVG. fmt formats axis values (default: money)."""
+    fmt = fmt or money
     vals = [v for _, _, vs in series for v in vs]
     if not vals:
         return ""
@@ -51,7 +52,7 @@ def line_chart(series, labels, width=760, height=220):
     for k in range(5):
         v = lo + (hi - lo) * k / 4
         out.append('<line x1="%d" x2="%d" y1="%.1f" y2="%.1f" class="grid"/>' % (pad_l, width - 10, Y(v), Y(v)))
-        out.append('<text x="%d" y="%.1f" class="axis" text-anchor="end">%s</text>' % (pad_l - 6, Y(v) + 4, e(money(v))))
+        out.append('<text x="%d" y="%.1f" class="axis" text-anchor="end">%s</text>' % (pad_l - 6, Y(v) + 4, e(fmt(v))))
     step = max(1, len(labels) // 10)
     for i in range(0, len(labels), step):
         out.append('<text x="%.1f" y="%d" class="axis" text-anchor="middle">%s</text>' % (X(i), height - 6, e(labels[i])))
@@ -65,6 +66,45 @@ def line_chart(series, labels, width=760, height=220):
 
 def _places(p):
     return e(", ".join(p)) if p else '<span class="muted">—</span>'
+
+
+def _made_on(recipes):
+    """'Oven, Advanced Oven (makes 20)' for a dish's known recipes."""
+    parts = []
+    for r in recipes:
+        where = ", ".join(r["crafters"][:2]) or "?"
+        parts.append("%s (makes %s)" % (where, r["qty"]) if r["qty"] else where)
+    return e("; ".join(parts))
+
+
+def make_sections(a):
+    out = ["<h3>Make these (trending, you know the recipe, none in stock)</h3>"]
+    out.append(table(["Item", "Type", "Base price", "Made on"],
+                     [[e(r["name"]), e(r["kind"]), money(r["price"]), _made_on(r["recipes"])] for r in a["make"]]))
+    out.append("<h3>What to make with each trending ingredient</h3>"
+               "<p class='muted'>Dishes from recipes you know that use the ingredient, highest base price "
+               "first (the game's sell price for the dish, before ingredients, quality and your menu "
+               "pricing). Unpopular dishes are left out. <b>fixed</b> means the recipe always uses it "
+               "rather than letting you choose it; the trend is assumed to count for these too, but "
+               "that's not yet tested in game.</p>")
+    for g in a["make_with"]:
+        now = ("on the menu now: " + ", ".join(g["serving_now"])) if g["serving_now"] else "no menu dish uses it now"
+        out.append("<h4>%s <span class='muted'>· stored %d · %s</span></h4>" % (e(g["name"]), g["stored"], e(now)))
+        if g["options"]:
+            out.append(_dish_table(g["options"]))
+            if g["option_count"] > len(g["options"]):
+                out.append("<p class='muted'>%d more dishes can use it.</p>" % (g["option_count"] - len(g["options"])))
+        else:
+            out.append("<p class='muted'>None of the recipes you know use it.</p>")
+    return "".join(out)
+
+
+def _dish_table(rows):
+    return table(["Dish", "Type", "Base price", "Dish trending", "On menu", "Stored", "How", "Made on"],
+                 [[e(r["name"]), e(r["kind"]), money(r["price"]), "yes" if r["dish_popular"] else "",
+                   _places(r["on_menu"]), r["stored"] or "",
+                   e(r["chain"]) + (" <b>fixed</b>" if r.get("fixed") else ""), _made_on(r["recipes"])]
+                  for r in rows], "compact")
 
 
 def trend_section(week, title):
@@ -95,6 +135,12 @@ def trend_section(week, title):
                        "yes" if r["dish_popular"] else "", "yes" if r["menu_uses_it"] else ""]
                       for r in a["cook_with"]]))
 
+    if not week.get("catalogue"):
+        out.append("<p class='muted'>Run <code>trtool extract</code> to also get suggestions from every recipe "
+                   "you know, not just dishes you've made.</p>")
+    else:
+        out.append(make_sections(a))
+
     out.append("<h3>Full trend lists</h3>")
     rows = []
     for kind in ("food", "drink", "ingredient"):
@@ -107,10 +153,29 @@ def trend_section(week, title):
     return "".join(out)
 
 
-def stats_section(days):
+def reputation_block(rep):
+    out = ["<h3>Reputation</h3>"]
+    if not rep:
+        return ""
+    cur = rep[-1]
+    out.append("<p>Now: level <b>%s</b>, progress %s.</p>" % (e(cur["reputation"]), e(cur["progress"])))
+    out.append("<p class='muted'>The save only holds today's value, so this history covers the in-game days "
+               "a save was learned (every <code>trtool report</code> run records one).</p>")
+    if len(rep) > 1:
+        recent = rep[-28:]
+        out.append(line_chart([("Reputation progress", "#8064a2", [r["progress"] or 0 for r in recent])],
+                              ["d%d" % r["day_number"] for r in recent], height=180, fmt=lambda v: "%.0f" % v))
+    out.append(table(["Date", "Saved at", "Level", "Progress", "Gained since previous"],
+                     [[e(r["date"]), e(r["time"]), e(r["reputation"]), e(r["progress"]),
+                       "level up" if r["level_up"] else ("" if r["gained"] is None else "%+d" % r["gained"])]
+                      for r in reversed(rep[-14:])], "compact"))
+    return "".join(out)
+
+
+def stats_section(days, rep=None):
     out = ["<section><h2>Daily stats &amp; money</h2>"]
     if not days:
-        return out[0] + "<p class='muted'>No daily stats yet.</p></section>"
+        return out[0] + "<p class='muted'>No daily stats yet.</p>" + reputation_block(rep) + "</section>"
     last, prev = analysis.summarize(days, 7), analysis.summarize(days[:-7], 7)
 
     def row(label, key, fmt=lambda v: "%.0f" % v):
@@ -147,6 +212,7 @@ def stats_section(days):
                        money(d["salesIncome"]), money(d.get("foodIncome", 0)), money(d.get("drinkIncome", 0)),
                        money(d.get("rentRoomIncome", 0)), money(d["staffCost"]), money(d.get("shopExpenses", 0))]
                       for d in reversed(days[-14:])], "compact"))
+    out.append(reputation_block(rep))
     out.append("</section>")
     return "".join(out)
 
@@ -155,7 +221,7 @@ CSS = """
 body{font:14px/1.45 system-ui,sans-serif;margin:0;background:#faf7f2;color:#2b2520}
 main{max-width:980px;margin:0 auto;padding:24px}
 h1{margin:0 0 4px;font-size:24px} h2{margin:32px 0 8px;border-bottom:2px solid #d8cbb8;padding-bottom:4px}
-h3{margin:18px 0 6px;font-size:15px}
+h3{margin:18px 0 6px;font-size:15px} h4{margin:12px 0 4px;font-size:14px}
 .meta{display:flex;flex-wrap:wrap;gap:8px 24px;margin:8px 0 0}
 .meta b{display:block;font-size:18px}
 table{border-collapse:collapse;width:100%;margin:4px 0 8px;background:#fff}
@@ -169,11 +235,15 @@ footer{margin:32px 0 0;color:#8a7d6e;font-size:12px}
 """
 
 
-def render(save, con, names):
+def render(save, con, names, cat=None, data_dir=None):
+    """cat: catalogue.Catalogue limited to known recipes (None: skip those suggestions).
+    data_dir: where learned history lives (reputation.tsv)."""
+    from .db import DATA
     s, d = save.summary, save.date
-    this_w = analysis.trend_week(save, con, names, 0)
-    next_w = analysis.trend_week(save, con, names, 1)
+    this_w = analysis.trend_week(save, con, names, 0, cat)
+    next_w = analysis.trend_week(save, con, names, 1, cat)
     days = analysis.daily(save)
+    rep = analysis.reputation_history(save, data_dir or DATA)
     unnamed = analysis.unnamed_ingredients(save, con, names)
     next_week_no = d["week"] % 4 + 1  # assumes 4-week seasons
     when = "Year %d, %s, Week %d, %s %d" % (d["year"], d["season"], d["week"], d["weekday"], d["day_of_month"])
@@ -186,10 +256,11 @@ def render(save, con, names):
              "<div class='meta'>%s</div>" % "".join("<div><span class='muted'>%s</span><b>%s</b></div>" % (e(k), e(v)) for k, v in meta)]
 
     if d["weekday"] == "Sun":
-        parts.append("<p><b>It's Sunday:</b> next week's trends start tomorrow, so plan the menu with them.</p>")
-    parts.append(trend_section(next_w, "Next week (Week %d)" % next_week_no))
+        parts.append("<p><b>It's Sunday:</b> next week's trends start tomorrow, so plan the menu with them "
+                     "(Next week, below the stats).</p>")
     parts.append(trend_section(this_w, "This week (Week %d)" % d["week"]))
-    parts.append(stats_section(days))
+    parts.append(stats_section(days, rep))
+    parts.append(trend_section(next_w, "Next week (Week %d)" % next_week_no))
 
     staff = save.staff()
     if staff:

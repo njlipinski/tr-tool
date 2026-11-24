@@ -1,4 +1,5 @@
-"""Queries over build/catalogue.db (written by `trtool extract`). Stdlib only.
+"""Queries over build/catalogue.db (the extracted game data with the user's
+overrides applied; see trtool/overrides.py). Stdlib only.
 
 Rules applied by every helper here:
 - replaced recipes (recipes.replaced = 1) are ignored;
@@ -20,12 +21,17 @@ superset of what saves can contain.
 import os
 import sqlite3
 
-from .db import ROOT
+from . import overrides
 
-DEFAULT_PATH = os.path.join(ROOT, "build", "catalogue.db")
+DEFAULT_PATH = overrides.paths()[1]
 
 
-def connect(path=DEFAULT_PATH):
+def connect(path=DEFAULT_PATH, overrides_dir=overrides.OVERRIDES_DIR):
+    """Open a catalogue. When extracted.db sits beside it, the catalogue is first
+    rebuilt if it's missing or older than the extracted data or the overrides."""
+    build_dir = os.path.dirname(os.path.abspath(path))
+    if os.path.basename(path) == overrides.CATALOGUE_NAME and overrides.needs_build(build_dir, overrides_dir):
+        overrides.build(build_dir, overrides_dir)
     if not os.path.exists(path):
         raise FileNotFoundError("No catalogue at %s. Run: trtool extract" % path)
     con = sqlite3.connect(path)
@@ -33,14 +39,29 @@ def connect(path=DEFAULT_PATH):
     return con
 
 
+FOOD_TYPES = {1: "food", 2: "drink"}   # items.food_type, read off the menu items in a real save
+
+
+def known_recipe_ids(con, unlocked):
+    """The save's unlocked recipes plus the basic ones that need no unlocking
+    (recipes.unlock = 0: flours, malts, worts, musts...)."""
+    return set(unlocked) | {r[0] for r in con.execute("SELECT recipe_id FROM recipes WHERE unlock = 0")}
+
+
 class Catalogue:
-    def __init__(self, con):
+    def __init__(self, con, recipe_ids=None):
+        """recipe_ids: only consider these recipes (e.g. known_recipe_ids()), so every
+        chain the helpers return goes through recipes the player can make."""
         self.con = con
         self.items = {r["id"]: dict(r) for r in con.execute("SELECT * FROM items")}
         self.members = {}
         for r in con.execute("SELECT group_id, member_id FROM group_members"):
             self.members.setdefault(r[0], []).append(r[1])
-        self.recipes = {r["recipe_id"]: dict(r) for r in con.execute("SELECT * FROM recipes WHERE replaced = 0")}
+        self.recipes = {r["recipe_id"]: dict(r) for r in con.execute("SELECT * FROM recipes WHERE replaced = 0")
+                        if recipe_ids is None or r["recipe_id"] in recipe_ids}
+        self.crafters = {}
+        for r in con.execute("SELECT crafter_id, recipe_id FROM crafter_recipes ORDER BY crafter_id"):
+            self.crafters.setdefault(r[1], []).append(r[0])
         self.inputs = {}
         for r in con.execute("SELECT recipe_id, input_id FROM recipe_inputs ORDER BY recipe_id, slot"):
             if r[0] in self.recipes:
@@ -56,6 +77,15 @@ class Catalogue:
 
     def is_group(self, i):
         return i is not None and i < 0
+
+    def serving(self, i):
+        """'food' or 'drink' when the item can go on the menu, else None."""
+        r = self.items.get(i) or {}
+        return FOOD_TYPES.get(r.get("food_type")) if r.get("can_be_sold") else None
+
+    def price(self, i):
+        """Base sell price in copper (Food.sellPrice in the game files)."""
+        return (self.items.get(i) or {}).get("sell_price_copper")
 
     # --- groups -------------------------------------------------------------
     def expand(self, group_id, _seen=None):

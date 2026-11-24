@@ -1,6 +1,7 @@
--- Game catalogue, written by `trtool extract` from the installed game files.
--- Disposable: regenerate after each game update. Never edit by hand
--- (manual fixes will go through overrides in Phase 3).
+-- Game catalogue. `trtool extract` writes build/extracted.db from the installed
+-- game files, then copies it to build/catalogue.db with the user's overrides
+-- (data/overrides/*.tsv) applied. Both are disposable: regenerate after each
+-- game update. Never edit them by hand; fix values with export-xlsx/import-xlsx.
 -- Integer enum columns (category, food_type, ingredient_type, unlock, ...) hold
 -- the game's raw values; their names aren't known yet.
 

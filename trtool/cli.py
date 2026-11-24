@@ -6,7 +6,7 @@ import json
 import os
 import sys
 
-from . import analysis, config, db, learn as learn_mod, report
+from . import analysis, config, db, learn as learn_mod, overrides, report
 from .save import Save
 
 
@@ -53,12 +53,23 @@ def cmd_learn(a):
         print("%s  %s" % (s.path, json.dumps(learn_mod.learn(s))))
 
 
+def known_catalogue(save):
+    """The game catalogue limited to recipes this save knows, or None when not extracted yet."""
+    from . import catalogue
+    try:
+        con = catalogue.connect()
+    except FileNotFoundError:
+        print("No game catalogue yet (run: trtool extract); skipping suggestions from known recipes.")
+        return None
+    return catalogue.Catalogue(con, catalogue.known_recipe_ids(con, save.unlocked_recipes()))
+
+
 def cmd_report(a):
     s = Save(resolve_save(a.save))
     if not a.no_learn:
         learn_mod.learn(s)
     con = db.connect(a.db)
-    page = report.render(s, con, db.Names(con))
+    page = report.render(s, con, db.Names(con), known_catalogue(s))
     out = a.output or os.path.splitext(os.path.basename(s.path))[0] + "_report.html"
     with open(out, "w", encoding="utf-8") as f:
         f.write(page)
@@ -119,13 +130,48 @@ def game_data_dir(a):
         sys.exit(str(e))
 
 
+def print_stale(stale):
+    if not stale:
+        return
+    print("%d stale override(s): the game changed under them, so they were NOT applied." % len(stale))
+    print("Keep or drop each in the workbook's '%s' sheet (export-xlsx, then import-xlsx):" % "Stale overrides")
+    for table, r, why in stale:
+        print("  %s %s %s %s: %s" % (table, overrides.key_text(r["key"]), r["action"], r["column"], why))
+
+
+def build_catalogue(a):
+    res = overrides.build(a.build_dir, a.overrides_dir)
+    print("Built %s (%d overrides applied)" % (overrides.paths(a.build_dir)[1], res["applied"]))
+    print_stale(res["stale"])
+
+
 def cmd_extract(a):
     from .extract import catalogue as ex
     data_dir = game_data_dir(a)
-    counts = ex.extract(data_dir, a.output)
-    print("Wrote %s (game %s)" % (a.output, counts.pop("game_version")))
+    extracted = overrides.paths(a.build_dir)[0]
+    counts = ex.extract(data_dir, extracted)
+    print("Wrote %s (game %s)" % (extracted, counts.pop("game_version")))
     for t, n in counts.items():
         print("  %-16s %6d" % (t, n))
+    build_catalogue(a)
+
+
+def cmd_export_xlsx(a):
+    from . import xlsx
+    counts = xlsx.export(a.output, a.build_dir, a.overrides_dir)
+    print("Wrote %s (%d sheets, %d rows)" % (a.output, len(counts), sum(counts.values())))
+
+
+def cmd_import_xlsx(a):
+    from . import xlsx
+    try:
+        changed = xlsx.import_(a.workbook, a.build_dir, a.overrides_dir, dry_run=a.dry_run)
+    except xlsx.ImportError_ as e:
+        sys.exit("Nothing saved. Fix these in the workbook first:\n%s" % e)
+    if a.dry_run:
+        print("Dry run: nothing saved.")
+    elif changed:
+        build_catalogue(a)
 
 
 def cmd_explore(a):
@@ -174,10 +220,28 @@ def main(argv=None):
     sp.add_argument("value", nargs="?")
     sp.set_defaults(func=cmd_config)
 
-    sp = sub.add_parser("extract", help="build the game catalogue (build/catalogue.db) from the installed game")
+    def catalogue_dirs(sp):
+        sp.add_argument("--build-dir", default=overrides.BUILD_DIR,
+                        help="where extracted.db and catalogue.db live (default: build/)")
+        sp.add_argument("--overrides-dir", default=overrides.OVERRIDES_DIR,
+                        help="override TSVs (default: data/overrides/)")
+
+    sp = sub.add_parser("extract", help="read the installed game into build/extracted.db, then build "
+                                        "build/catalogue.db with the overrides applied")
     sp.add_argument("--game-dir", help="install folder (default: config game_dir)")
-    sp.add_argument("-o", "--output", default=os.path.join(db.ROOT, "build", "catalogue.db"))
+    catalogue_dirs(sp)
     sp.set_defaults(func=cmd_extract)
+
+    sp = sub.add_parser("export-xlsx", help="write the catalogue to an Excel workbook for editing")
+    sp.add_argument("-o", "--output", default=os.path.join(overrides.BUILD_DIR, "catalogue.xlsx"))
+    catalogue_dirs(sp)
+    sp.set_defaults(func=cmd_export_xlsx)
+
+    sp = sub.add_parser("import-xlsx", help="save a workbook's differences from the game data as overrides")
+    sp.add_argument("workbook")
+    sp.add_argument("--dry-run", action="store_true", help="show what would change, save nothing")
+    catalogue_dirs(sp)
+    sp.set_defaults(func=cmd_import_xlsx)
 
     sp = sub.add_parser("explore", help="inventory the game's asset files (types and script classes)")
     sp.add_argument("--game-dir", help="install folder (default: config game_dir)")

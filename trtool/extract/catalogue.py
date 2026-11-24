@@ -1,4 +1,5 @@
-"""Build build/catalogue.db from the installed game. Read-only toward the game.
+"""Build build/extracted.db from the installed game. Read-only toward the game.
+(trtool/overrides.py then applies the user's overrides to make build/catalogue.db.)
 
 Sources (see docs/findings.md):
   ItemDatabase.items/food/fish -> items, fish;  IngredientGroup -> group_members
@@ -10,6 +11,7 @@ Sources (see docs/findings.md):
 import datetime
 import os
 import sqlite3
+import struct
 
 from . import game_version, locate_data_dir
 from .i2 import Localization, read_language_source
@@ -30,6 +32,19 @@ def _copper(money):
 def _minutes(t):
     days = t.get("years", 0) * DAYS_PER_YEAR + t.get("weeks", 0) * 7 + t.get("days", 0)
     return days * 24 * 60 + t.get("hours", 0) * 60 + t.get("mins", 0)
+
+
+def _f32(v):
+    """A Unity float (32-bit) as the shortest decimal that is the same float32:
+    0.30000001192092896 -> 0.3. The stored value is unchanged, only its spelling."""
+    if not isinstance(v, float):
+        return v
+    target = struct.pack("<f", v)
+    for p in range(1, 10):
+        s = float("%.*g" % (p, v))
+        if struct.pack("<f", s) == target:
+            return s
+    return v
 
 
 def _season(mask, best, bit):
@@ -156,7 +171,7 @@ class Extractor:
                 "reputation": self.rep_number(r, r.get("reputationRequired")),
                 "arcane_reputation": r.get("arcaneReputationRequired"),
                 "sorcery_level": r.get("sorceryLevelRequired"), "recipe_fragments": r.get("recipeFragments"),
-                "shop_silver_price": r.get("shopSilverPrice"), "exclude_from_trends": r.get("excludeFromTrends"),
+                "shop_silver_price": _f32(r.get("shopSilverPrice")), "exclude_from_trends": r.get("excludeFromTrends"),
                 "save_ingredients": r.get("saveIngredientsAdded"),
                 "replaced": 1 if r.get("replacedRecipe") else 0,
                 "replaced_by": self.recipe_ids.get(new) if new else None,
@@ -237,7 +252,7 @@ class Extractor:
                 if iid is not None:
                     items.append({"shop_id": s["id"], "item_id": iid, "always_appear": x.get("alwaysAppear"),
                                   "unlimited": x.get("unlimited"), "min_qty": x.get("min"),
-                                  "max_qty": x.get("max"), "weight": x.get("weight")})
+                                  "max_qty": x.get("max"), "weight": _f32(x.get("weight"))})
             for rp in s.get("recipesList") or []:
                 rid = self.recipe_ids.get(self.g.key(s["__file"], rp))
                 if rid is not None:

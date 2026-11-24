@@ -35,6 +35,11 @@ def test_build_db_merges_curated_over_wiki(tmp_path):
 
 class FakeSave:
     date_label = "Y1 Autumn W3 Sun"
+    date = {"day_number": 77, "hour": 6, "minute": 1}
+    rep = {"reputation": 20, "progress": 28000, "arcane_reputation": 0, "arcane_progress": 0}
+
+    def reputation(self):
+        return self.rep
 
     def cooked_instances(self):
         yield 1365, [1245, 1275, 148]
@@ -55,6 +60,26 @@ def test_learn_is_idempotent_per_date(tmp_path):
     assert {r["seen_count"] for r in rows} == {"1"}
 
 
+def test_reputation_history(tmp_path):
+    from trtool import analysis
+    s = FakeSave()
+    assert learn.learn_reputation(s, str(tmp_path)) is True
+    assert learn.learn_reputation(s, str(tmp_path)) is False          # same day, same value
+    later = FakeSave()
+    later.date_label, later.date = "Y1 Autumn W4 Mon", {"day_number": 78, "hour": 6, "minute": 0}
+    later.rep = dict(s.rep, progress=28092)
+    learn.learn_reputation(later, str(tmp_path))
+    rows = db.read_tsv(str(tmp_path / "reputation.tsv"))
+    assert [(r["day_number"], r["progress"]) for r in rows] == [("77", "28000"), ("78", "28092")]
+    # the current save is included even when it wasn't learned (report --no-learn)
+    now = FakeSave()
+    now.date_label, now.date = "Y1 Autumn W4 Tue", {"day_number": 79, "hour": 6, "minute": 0}
+    now.rep = dict(s.rep, reputation=21, progress=100)
+    hist = analysis.reputation_history(now, str(tmp_path))
+    assert [(h["day_number"], h["gained"], h["level_up"]) for h in hist] == [
+        (77, None, False), (78, 92, False), (79, None, True)]
+
+
 @pytest.mark.skipif(not REAL_SAVE, reason="set TRTOOL_TEST_SAVE to a .save file")
 def test_real_save_end_to_end(tmp_path):
     from trtool.save import Save
@@ -65,4 +90,7 @@ def test_real_save_end_to_end(tmp_path):
     assert any(m["where"].startswith("keg") for m in s.menu())
     out = tmp_path / "r.html"
     main(["--db", str(tmp_path / "t.db"), "report", REAL_SAVE, "-o", str(out), "--no-learn"])
-    assert "Next week" in out.read_text(encoding="utf-8")
+    page = out.read_text(encoding="utf-8")
+    assert page.index("This week") < page.index("Daily stats") < page.index("Next week")
+    assert "Reputation" in page
+    assert d["day_number"] >= 1 and s.reputation()["reputation"] is not None

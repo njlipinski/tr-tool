@@ -52,12 +52,31 @@ def test_explore_smoke(tmp_path):
 
 
 @pytest.fixture(scope="module")
-def real_catalogue(tmp_path_factory):
-    from trtool import catalogue
+def real_build(tmp_path_factory):
+    """A build dir holding a fresh extracted.db."""
+    from trtool import overrides
     from trtool.extract import catalogue as ex
-    path = str(tmp_path_factory.mktemp("cat") / "catalogue.db")
-    ex.extract(GAME_DIR, path, log=lambda *_: None)
-    return catalogue.Catalogue(catalogue.connect(path))
+    build = str(tmp_path_factory.mktemp("build"))
+    ex.extract(GAME_DIR, overrides.paths(build)[0], log=lambda *_: None)
+    return build
+
+
+@pytest.fixture(scope="module")
+def real_catalogue(real_build):
+    from trtool import catalogue, overrides
+    return catalogue.Catalogue(catalogue.connect(overrides.paths(real_build)[0]))
+
+
+@pytest.mark.skipif(not GAME_DIR, reason="set TRTOOL_GAME_DIR to the game install")
+def test_real_xlsx_round_trip_is_clean(real_build, tmp_path, capsys):
+    """Exporting the real catalogue and importing it untouched saves no overrides."""
+    pytest.importorskip("openpyxl")
+    ovd, book = str(tmp_path / "overrides"), str(tmp_path / "c.xlsx")
+    args = ["--build-dir", real_build, "--overrides-dir", ovd]
+    main(["export-xlsx", "-o", book] + args)
+    main(["import-xlsx", book] + args)
+    assert "No changes" in capsys.readouterr().out
+    assert not os.path.exists(ovd)
 
 
 @pytest.mark.skipif(not GAME_DIR, reason="set TRTOOL_GAME_DIR to the game install")

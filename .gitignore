@@ -5,3 +5,4 @@ __pycache__/
 *_report.html
 .pytest_cache/
 trtool.ini
+*.xlsx

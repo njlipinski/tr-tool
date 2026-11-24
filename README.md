@@ -22,13 +22,19 @@ On Windows the saves are in
 
 ## What the report shows
 
-- **Next week and this week's trends** against your bar, taps and kegs:
+In this order:
+
+- **This week's trends** against your bar, taps and kegs:
   trending items you have in stock but aren't serving, unpopular items still on
-  the menu, menu dishes hit by ingredient trends, and dishes you've made before
-  with a trending ingredient ("cook X with Y").
-- **Daily stats & money**: last 7 days vs the 7 before, a 28-day chart, and a
+  the menu, menu dishes hit by ingredient trends, dishes you've made before
+  with a trending ingredient ("cook X with Y"), and, from every recipe you
+  know (needs `trtool extract`): trending dishes you could make, and for each
+  trending ingredient the highest-priced dishes you could make with it.
+- **Daily stats & money**: last 7 days vs the 7 before, a 28-day chart, a
   14-day table (customers, kicked, price-rejected, sales split, rent, wages,
-  shop spending).
+  shop spending), and **reputation** (level and progress per in-game day; the
+  save only holds today's value, so the history builds up as you run reports).
+- **Next week's trends**, same as this week.
 - **Staff** and **ingredients that still need a confirmed name**.
 
 ## Commands
@@ -42,7 +48,9 @@ On Windows the saves are in
 | `dump [SAVE] [--field NAME]` | Print the decoded save as JSON, for exploring new fields. |
 | `where` | Print the save folder the tool found. |
 | `config [show\|get\|set] [KEY] [VALUE]` | Local settings in `trtool.ini` (gitignored), e.g. `config set game_dir "E:\SteamLibrary\steamapps\common\Travellers Rest"`. `TRTOOL_GAME_DIR` overrides it. |
-| `extract [--game-dir PATH] [-o FILE]` | Build the game catalogue (items, groups, recipes, crafters, crops, fish, shops; English names) into `build/catalogue.db`. Re-run after each game update. Needs `pip install UnityPy TypeTreeGeneratorAPI`. |
+| `extract [--game-dir PATH]` | Read the game files (items, groups, recipes, crafters, crops, fish, shops; English names) into `build/extracted.db`, then build `build/catalogue.db` with your overrides applied. Re-run after each game update; it lists overrides the update made stale. Needs `pip install UnityPy TypeTreeGeneratorAPI`. |
+| `export-xlsx [-o FILE]` | Write the catalogue to Excel (default `build/catalogue.xlsx`), one sheet per table, names next to IDs. Needs `pip install openpyxl`. |
+| `import-xlsx FILE [--dry-run]` | Save the workbook's differences from the game data as overrides in `data/overrides/`, then rebuild the catalogue. Needs `pip install openpyxl`. |
 | `explore [--game-dir PATH]` | Inventory the game's asset files (object types and script classes) into `build/explore/`. Needs `pip install UnityPy TypeTreeGeneratorAPI`. |
 
 `SAVE` can be a `.save` file or a folder (the newest `.save` in it is used).
@@ -60,6 +68,16 @@ rebuilt from them, so edit the files, not the database.
 | `item_sources.tsv` | Where to get an item (shop, crop, forage, fish...) | You |
 | `dish_ingredients.tsv` | Dish ↔ ingredient pairs seen in your saves | `learn` |
 | `recipe_inputs.tsv` | Recipe inputs seen in crafting history | `learn` |
+| `reputation.tsv` | Reputation level and progress, one row per in-game day a save was learned | `learn` |
+
+**Fixing a catalogue value** (anything `extract` got wrong or missed):
+`trtool export-xlsx`, edit the cells (or add/delete rows) and fill in `note`,
+then `trtool import-xlsx build/catalogue.xlsx`. Only the differences from the
+game data are saved, one line per cell, in `data/overrides/<table>.tsv`
+(committed). Each line keeps the value it replaced. If a game update changes
+that value, the override is listed as stale and not applied until you keep
+or drop it in the workbook's "Stale overrides" sheet. Workbooks are
+gitignored because they contain game data.
 
 **Confirming an ingredient name:** hover the item in game (prepared dishes
 list their ingredients in green), then edit its row in `items_curated.tsv`

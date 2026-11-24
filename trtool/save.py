@@ -52,9 +52,12 @@ class Save:
     def date(self):
         t = self.raw["currentTime"]
         weekday = t["day"]["value__"]                     # 0 = Monday
+        season = t["season"]["value__"]
         return {
             "year": t["year"],
-            "season": SEASONS[t["season"]["value__"]],
+            "season": SEASONS[season],
+            # 1-based day count since Year 1 Spring Mon (4 seasons x 4 weeks x 7 days)
+            "day_number": ((t["year"] - 1) * 4 + season) * 28 + t["week"] * 7 + weekday + 1,
             "week": t["week"] + 1,                         # save is 0-based
             "weekday": DAYS[weekday],
             "day_of_month": t["week"] * 7 + weekday + 1,
@@ -151,6 +154,19 @@ class Save:
     def recent_recipes(self):
         """(recipeID, output itemID, [(input itemID, amount)]) per remembered craft."""
         return [(rid, out, ins) for rid, out, ins, _ in self._recent()]
+
+    def unlocked_recipes(self):
+        """Recipe IDs the player has unlocked (altar, shops, ...). Basic recipes
+        that need no unlocking (catalogue recipes.unlock = 0) are not listed."""
+        return set(self.raw.get("unlockedRecipes") or [])
+
+    # --- reputation ----------------------------------------------------------
+    def reputation(self):
+        """Reputation at the moment of saving. The save keeps only the current
+        value (no per-day history); `learn` records one snapshot per in-game day."""
+        r = self.raw
+        return {"reputation": r.get("tavernRep"), "progress": r.get("tavernProgress"),
+                "arcane_reputation": r.get("arcaneRep"), "arcane_progress": r.get("arcaneProgress")}
 
     # --- daily stats -----------------------------------------------------
     def daily_stats(self):
